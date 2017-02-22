@@ -1,0 +1,24 @@
+{
+  "name": "annotation-js",
+  "version": "0.0.1",
+  "description": "Annotation for Javascript language with navigation in subclasses",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaojuniormail/annotation-js.git"
+  },
+  "keywords": [
+    "annotation",
+    "annotations",
+    "parser"
+  ],
+  "author": "João Júnior <joaojunior.mail@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joaojuniormail/annotation-js/issues"
+  },
+  "homepage": "https://github.com/joaojuniormail/annotation-js#readme"
+}
