@@ -2,9 +2,9 @@
   "name": "annotation-js",
   "version": "0.0.1",
   "description": "Annotation for Javascript language with navigation in subclasses",
-  "main": "index.js",
+  "main": "annotation.js",
   "scripts": {
-    "test": "npm index.js"
+    "test": "npm annotation.js"
   },
   "repository": {
     "type": "git",
