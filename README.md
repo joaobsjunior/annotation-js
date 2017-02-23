@@ -1,3 +1,3 @@
 # annotation-js
 
-`global.populateToService` end `global.populateToPersistence` for **oracledb**
+`global.populateToService` and `global.populateToPersistence` for **oracledb**
