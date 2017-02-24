@@ -87,6 +87,10 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                         return "new Date(" + value.getTime() + ")";
                     case "string":
                         return '"' + value + '"';
+                    case "boolean":
+                        return (value == 'true' || value == '1') ? true : false;
+                    case "number":
+                        return (parseFloat(value)) ? parseFloat(value) : value;
                     default:
                         return value;
                 }
@@ -99,6 +103,8 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                         return '"' + value + '"';
                     case "boolean":
                         return (value == 'true' || value == '1') ? true : false;
+                    case "number":
+                        return (parseFloat(value)) ? parseFloat(value) : value;
                     default:
                         return value;
                 }
