@@ -137,9 +137,8 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
 
 /* -------------------------------- POPULATE TO SERVICE --------------------------------  */
 
-global.populateToService = function (_variable, _req, _reqType, _mainAnnotation, _nameVariable, _annotationParam, _maxLevel = 2, _stringConcat = "") {
+global.populateToService = function (_variable, _req, _reqType, _mainAnnotation, _annotationParam, _maxLevel = 2, _stringConcat = "") {
     var object = _variable.getAnnotations(_mainAnnotation, _maxLevel);
-    var nameMainVariable = _nameVariable;
     var nameAnnotation = _annotationParam;
     var stringConcat = _stringConcat;
     var keyArr = [];
@@ -148,13 +147,11 @@ global.populateToService = function (_variable, _req, _reqType, _mainAnnotation,
     var reqType = _reqType || "query";
     var req = _req;
     for (var key in object) {
-        if (object.hasOwnProperty(key)) {
+        if (object.hasOwnProperty(key) && typeof object[key] !== "function") {
             if (reqType === "body") {
                 try {
-                    if (typeof object[key] !== "function") {
-                        var value = object.getValueTypeForEval(eval("req." + key), object[key].type);
-                        eval("_variable." + key + "= " + value);
-                    }
+                    var value = object.getValueTypeForEval(eval("req." + key), object[key].type);
+                    eval("_variable." + key + "= " + value);
                 } catch (err) {
                     console.error("----\n", err.message, "\n object key: " + key + "\n----\n");
                 }
@@ -171,15 +168,15 @@ global.populateToService = function (_variable, _req, _reqType, _mainAnnotation,
                 var keyJoin = object[key][nameAnnotation] + stringConcat + incrementValue[object[key][nameAnnotation]];
                 if (req.hasOwnProperty(object[key][nameAnnotation])) {
                     value = object.getValueTypeForEval(req[object[key][nameAnnotation]], object[key].type);
-                    string += nameMainVariable + "." + key + "=" + value + ";";
+                    string += "_variable." + key + "=" + value + ";";
                 } else if (req.hasOwnProperty(keyJoin)) {
                     value = object.getValueTypeForEval(req[keyJoin], object[key].type);
-                    string += nameMainVariable + "." + key + "=" + value + ";";
+                    string += "_variable." + key + "=" + value + ";";
                 }
             }
         }
     }
-    return string;
+    eval(string);
 }
 
 /* -------------------------------- POPULATE TO PERSISTENCE --------------------------------  */
