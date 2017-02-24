@@ -137,7 +137,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
 
 /* -------------------------------- POPULATE TO SERVICE --------------------------------  */
 
-global.populateToService = function (_variable, _req, _mainAnnotation, _nameVariable, _annotationParam, _maxLevel = 2, _stringConcat = "") {
+global.populateToService = function (_variable, _req, _reqType, _mainAnnotation, _nameVariable, _annotationParam, _maxLevel = 2, _stringConcat = "") {
     var object = _variable.getAnnotations(_mainAnnotation, _maxLevel);
     var nameMainVariable = _nameVariable;
     var nameAnnotation = _annotationParam;
@@ -145,25 +145,35 @@ global.populateToService = function (_variable, _req, _mainAnnotation, _nameVari
     var keyArr = [];
     var incrementValue = {};
     var string = "";
+    var reqType = _reqType || "query";
     var req = _req;
     for (var key in object) {
         if (object.hasOwnProperty(key)) {
-            if (keyArr.indexOf(object[key][nameAnnotation]) !== 1) {
-                keyArr.push(object[key][nameAnnotation]);
-            }
-            if (typeof incrementValue[object[key][nameAnnotation]] === 'undefined') {
-                incrementValue[object[key][nameAnnotation]] = 1;
+            if (reqType === "body") {
+                try {
+                    var value = object.getValueTypeForEval(eval("req." + key), object[key].type);
+                    eval("_variable." + key + "= " + value);
+                } catch (err) {
+                    console.error("----\n", err.message, "\n object key: " + key + "\n----\n");
+                }
             } else {
-                incrementValue[object[key][nameAnnotation]]++;
-            }
-            var value = null;
-            var keyJoin = object[key][nameAnnotation] + stringConcat + incrementValue[object[key][nameAnnotation]];
-            if (req.hasOwnProperty(object[key][nameAnnotation])) {
-                value = object.getValueTypeForEval(req[object[key][nameAnnotation]], object[key].type);
-                string += nameMainVariable + "." + key + "=" + value + ";";
-            } else if (req.hasOwnProperty(keyJoin)) {
-                value = object.getValueTypeForEval(req[keyJoin], object[key].type);
-                string += nameMainVariable + "." + key + "=" + value + ";";
+                if (keyArr.indexOf(object[key][nameAnnotation]) !== 1) {
+                    keyArr.push(object[key][nameAnnotation]);
+                }
+                if (typeof incrementValue[object[key][nameAnnotation]] === 'undefined') {
+                    incrementValue[object[key][nameAnnotation]] = 1;
+                } else {
+                    incrementValue[object[key][nameAnnotation]]++;
+                }
+                var value = null;
+                var keyJoin = object[key][nameAnnotation] + stringConcat + incrementValue[object[key][nameAnnotation]];
+                if (req.hasOwnProperty(object[key][nameAnnotation])) {
+                    value = object.getValueTypeForEval(req[object[key][nameAnnotation]], object[key].type);
+                    string += nameMainVariable + "." + key + "=" + value + ";";
+                } else if (req.hasOwnProperty(keyJoin)) {
+                    value = object.getValueTypeForEval(req[keyJoin], object[key].type);
+                    string += nameMainVariable + "." + key + "=" + value + ";";
+                }
             }
         }
     }
