@@ -151,8 +151,10 @@ global.populateToService = function (_variable, _req, _reqType, _mainAnnotation,
         if (object.hasOwnProperty(key)) {
             if (reqType === "body") {
                 try {
-                    var value = object.getValueTypeForEval(eval("req." + key), object[key].type);
-                    eval("_variable." + key + "= " + value);
+                    if (typeof object[key] !== "function") {
+                        var value = object.getValueTypeForEval(eval("req." + key), object[key].type);
+                        eval("_variable." + key + "= " + value);
+                    }
                 } catch (err) {
                     console.error("----\n", err.message, "\n object key: " + key + "\n----\n");
                 }
