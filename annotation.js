@@ -82,7 +82,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
         if (Object.keys(objects).length) {
             objects.getTypeForEval = function (value, type) {
                 var type = type.toLowerCase();
-                if (value === null) {
+                if (value === null || value === undefined) {
                     return value;
                 }
                 switch (type) {
@@ -97,7 +97,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                 }
             }
             objects.getValueTypeForEval = function (value, type) {
-		if (value === null || value === undefined) {
+                if (value === null || value === undefined) {
                     return value;
                 }
                 switch (type) {
@@ -114,6 +114,9 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                 }
             }
             objects.getValueType = function (value, type) {
+                if (value === null || value === undefined) {
+                    return null;
+                }
                 switch (type) {
                     case "number":
                         return parseFloat(value);
@@ -222,3 +225,4 @@ global.populateToPersistence = function (_variable, _mainAnnotation, _nameVariab
     string = string.replace(/},}/, "}}");
     return string;
 }
+
