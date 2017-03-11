@@ -212,16 +212,17 @@ global.populateToPersistence = function (_variable, _mainAnnotation, _nameVariab
     var string = "bindVars = {";
     for (var key in object) {
         if (object.hasOwnProperty(key) && typeof object[key] !== "function") {
-            string += "\"" + object[key][nameAnnotation] + "\":{";
-            var value = object.getTypeForEval(eval("_variable." + key), object[key].type);
-            string += "\"val\":" + value + ",";
-            string += "type:oracledb." + object[key].type.toUpperCase() + ",";
-            string += "dir:oracledb." + object[key].dir;
-            string += "},";
+            if (object[key][nameAnnotation]) {
+                string += "\"" + object[key][nameAnnotation] + "\":{";
+                var value = object.getTypeForEval(eval("_variable." + key), object[key].type);
+                string += "\"val\":" + value + ",";
+                string += "type:oracledb." + object[key].type.toUpperCase() + ",";
+                string += "dir:oracledb." + object[key].dir;
+                string += "},";
+            }
         }
     }
     string += "}";
     string = string.replace(/},}/, "}}");
     return string;
 }
-
