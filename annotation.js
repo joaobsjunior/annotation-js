@@ -100,7 +100,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
             objects.getTypeForEval = function (value, type) {
                 var type = type.toLowerCase();
                 if (value === null || value === undefined) {
-                    return value;
+                    return null;
                 }
                 switch (type) {
                     case "date":
@@ -115,7 +115,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
             }
             objects.getValueTypeForEval = function (value, type) {
                 if (value === null || value === undefined) {
-                    return value;
+                    return null;
                 }
                 switch (type) {
                     case "date":
