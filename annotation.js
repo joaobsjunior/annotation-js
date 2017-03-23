@@ -1,6 +1,6 @@
 /*
 	@Annotation(
-		DATA[query=""<required>,column=""<opcional>,type=""<opcional>,sufix=""<string for sufix>]
+		DATA[query=""<required>,column=""<opcional>,type=""<opcional>,sufix=""<string for sufix>,dir=""<BIND_IN{default},BIND_OUT,BIND_INOUT>]
 	)
 	@type{class,number,date,boolean,string}
     @sufix{<string for sufix>}
