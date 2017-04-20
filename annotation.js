@@ -295,7 +295,7 @@ global.generateSQL = (_variable, _typeSQL = '', _tableName = '', _where = '', _m
                 }
             }
         }
-        sql += ' ' + _where;
+        sql += ' WHERE ' + _where;
         return sql;
     };
 

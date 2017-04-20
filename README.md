@@ -119,7 +119,7 @@ User.getAnnotations(<name_annotation{string}>,<max_level{integer}>);
 ```
 Exemplo:
 ```javascript
-User.getAnnotations('ANNOTATION_NAME_1',2);
+var annotation = User.getAnnotations('ANNOTATION_NAME_1',2);
 ```
  - Método para leitura de notação (popular dados em objeto através de um array):
 ```javascript
@@ -142,4 +142,13 @@ eval(stringToEval);
 bindVars = Object.assign({}, bindVars, {
       cursor: {dir: oracledb.BIND_OUT, type: oracledb.CURSOR, maxSize: 2}
     });
+```
+ - Método geração de SQL genérico (INSERT,UPDATE):
+```javascript
+global.generateSQL(<variable{any}>, <typeSQL{string(INSERT,UPDATE)}>, <table_name{string}>, <where{string}>,<name_annotation{string}>, <information_name{string}>,<max_level{integer}>);
+```
+Exemplo:
+```javascript
+var sql = global.generateSQL(user, "UPDATE", "TB_CLIENT", "id = 1", "ANNOTATION_NAME_1", "informationName", 3);
+console.log(sql);
 ```
