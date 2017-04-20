@@ -24,7 +24,9 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
         var keyObjArray = _keyObjArray || new Array();
         var words = self.constructor.toString();
         var annotations = words.replace(/\s|\*|\//g, "").match(/@Annotation(\S|\s)*?;/g);
-        if (!annotations) { return; }
+        if (!annotations) {
+            return;
+        }
         annotations.forEach(function (value, index) {
             value = value.replace(/],\)/g, "])");
             var keyObj = /this.(.*?)(\=)/.exec(value)[1];
@@ -73,7 +75,9 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
     var objectGeneration = function (_annotationsParamns, _sufix) {
         var object = {};
         var sufix = _sufix;
-        var annotationsParamns = _annotationsParamns.map(function (item, index) { return (index % 3 === 0) ? item.toLowerCase() : item });
+        var annotationsParamns = _annotationsParamns.map(function (item, index) {
+            return (index % 3 === 0) ? item.toLowerCase() : item
+        });
         var keySufix = annotationsParamns.indexOf('sufix=');
         if (keySufix !== -1) {
             sufix = _sufix + annotationsParamns[keySufix + 1].replace(/\"/g, "");
@@ -145,6 +149,21 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                         return value.toString();
                 }
             }
+            objects.getValueTypeForSQL = function (value, type) {
+                if (value === null || value === undefined) {
+                    return null;
+                }
+                switch (type) {
+                    case "number":
+                        return parseFloat(value);
+                    case "date":
+                        return "'" + value.toString() + "'";
+                    case "boolean":
+                        return (value == 'true' || value == '1') ? 1 : 0;
+                    default:
+                        return "'" + value.toString() + "'";
+                }
+            }
         }
     }
 
@@ -160,7 +179,8 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
 
 /* -------------------------------- POPULATE TO SERVICE --------------------------------  */
 
-global.populateToService = function (_variable, _req, _reqType, _mainAnnotation, _annotationParam, _maxLevel = 2, _stringConcat = "") {
+
+global.populateToService = (_variable, _req, _reqType, _mainAnnotation, _annotationParam, _maxLevel = 2, _stringConcat = "") => {
     var object = _variable.getAnnotations(_mainAnnotation, _maxLevel);
     var nameAnnotation = _annotationParam;
     var stringConcat = _stringConcat;
@@ -204,7 +224,7 @@ global.populateToService = function (_variable, _req, _reqType, _mainAnnotation,
 
 /* -------------------------------- POPULATE TO PERSISTENCE --------------------------------  */
 
-global.populateToPersistence = function (_variable, _mainAnnotation, _nameVariable, _annotationParam, _maxLevel = 2, _stringConcat = "") {
+global.populateToPersistence = (_variable, _mainAnnotation, _nameVariable, _annotationParam, _maxLevel = 2, _stringConcat = "") => {
     var object = _variable.getAnnotations(_mainAnnotation, _maxLevel);
     var nameMainVariable = _nameVariable;
     var nameAnnotation = _annotationParam;
@@ -226,3 +246,65 @@ global.populateToPersistence = function (_variable, _mainAnnotation, _nameVariab
     string = string.replace(/},}/, "}}");
     return string;
 }
+
+/* -------------------------------- GENERATE SQL ANSI --------------------------------  */
+
+global.generateSQL = (_variable, _typeSQL = '', _tableName = '', _where = '', _mainAnnotation, _annotationParam, _maxLevel = 2) => {
+    var object = _variable.getAnnotations(_mainAnnotation, _maxLevel);
+    var nameAnnotation = _annotationParam;
+    var sql = '';
+
+    var generateINSERT = () => {
+        sql += "INSERT INTO " + _tableName + " ( ";
+        for (var key in object) {
+            if (object.hasOwnProperty(key) && typeof object[key] !== "function") {
+                if (object[key][nameAnnotation]) {
+                    var value = eval("_variable." + key);
+                    if (value || value === 0) {
+                        sql += object[key][nameAnnotation] + ',';
+                    }
+                }
+            }
+        }
+        sql = sql.slice(0, -1);
+        sql += " ) VALUES ( ";
+        for (var key in object) {
+            if (object.hasOwnProperty(key) && typeof object[key] !== "function") {
+                if (object[key][nameAnnotation]) {
+                    var value = eval("_variable." + key);
+                    if (value || value === 0) {
+                        sql += object.getValueTypeForSQL(value, object[key].type) + ',';
+                    }
+                }
+            }
+        }
+        sql = sql.slice(0, -1);
+        sql += " )";
+        return sql;
+    };
+
+    var generateUPDATE = () => {
+        sql += "UPDATE " + _tableName + " SET ";
+        for (var key in object) {
+            if (object.hasOwnProperty(key) && typeof object[key] !== "function") {
+                if (object[key][nameAnnotation]) {
+                    var value = eval("_variable." + key);
+                    if (value || value === 0) {
+                        sql += object[key][nameAnnotation] + '=' + object.getValueTypeForSQL(value, object[key].type);
+                    }
+                }
+            }
+        }
+        sql += ' ' + _where;
+        return sql;
+    };
+
+    switch (_typeSQL.trim().toUpperCase()) {
+        case 'INSERT':
+            return generateINSERT();
+        case 'UPDATE':
+            return generateUPDATE();
+        default:
+            return sql;
+    }
+};
