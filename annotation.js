@@ -2,7 +2,7 @@
 	@Annotation(
 		DATA[query=""<required>,column=""<opcional>,type=""<opcional>,sufix=""<string for sufix>,dir=""<BIND_IN{default},BIND_OUT,BIND_INOUT>]
 	)
-	@type{class,number,date,boolean,string}
+	@type{class,number,integer(remove all outher caracterer),date,boolean,string}
     @sufix{<string for sufix>}
 */
 
@@ -130,6 +130,9 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                         return (value == 'true' || value == '1') ? true : false;
                     case "number":
                         return (parseFloat(value)) ? parseFloat(value) : value;
+                    case "integer":
+                        value = value.replace(/\D/g, '');
+                        return (parseFloat(value)) ? parseFloat(value) : value;
                     default:
                         return value;
                 }
@@ -141,6 +144,9 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                 switch (type) {
                     case "number":
                         return parseFloat(value);
+                    case "integer":
+                        value = value.replace(/\D/g, '');
+                        return (parseFloat(value)) ? parseFloat(value) : value;
                     case "date":
                         return new Date(value);
                     case "boolean":
@@ -156,6 +162,9 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                 switch (type) {
                     case "number":
                         return parseFloat(value);
+                    case "integer":
+                        value = value.replace(/\D/g, '');
+                        return (parseFloat(value)) ? parseFloat(value) : value;
                     case "date":
                         return "'" + value.toString() + "'";
                     case "boolean":

@@ -8,7 +8,7 @@ Modelo da anotação:
 @Annotation(
 DATA[query=""<required>,column=""<opcional>,type=""<opcional>,sufix=""<string for sufix>,dir=""<BIND_IN{default},BIND_OUT,BIND_INOUT>]
 )
-@type{class,number,date,boolean,string}
+@type{class,number,integer(remove all outher caracterer),date,boolean,string}
 @sufix{<string for sufix>}
 */
 ```
@@ -41,7 +41,7 @@ class Contact {
             ANNOTATION_NAME_1[informationName="param_age"],
             ANNOTATION_NAME_2[informationName="param_age_2"],
         )
-        @type{number}
+        @type{integer}
         */
         this.age = age;
     }
@@ -64,6 +64,14 @@ class OutherData {
         @type{string}
         */
         this.description = description;
+         /*
+        @Annotation(
+            ANNOTATION_NAME_1[informationName="param_cpf",dir:"BIND_INOUT"],
+            ANNOTATION_NAME_2[informationName="param_cpf_2"],
+        )
+        @type{integer}
+        */
+        this.cpf = cpf; //If "123.456.789.12" is seted, all characters other than numbers will be removed, resulting "12345678912"
     }
 }
 class User {
