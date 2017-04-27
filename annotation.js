@@ -228,7 +228,12 @@ global.populateToService = (_variable, _req, _reqType, _mainAnnotation, _annotat
             }
         }
     }
-    eval(string);
+    try {
+        eval(string);
+    } catch (error) {
+        throw error;
+    }
+
 }
 
 /* -------------------------------- POPULATE TO PERSISTENCE --------------------------------  */
