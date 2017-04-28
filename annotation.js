@@ -6,19 +6,19 @@
     @sufix{<string for sufix>}
 */
 
-JSON.clone = function (value) {
+JSON.clone = function(value) {
     return JSON.parse(JSON.stringify(value));
 }
 
 /* -------------------------------- GET ANNOTATIONS --------------------------------  */
 
-Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel = 2) {
+Object.prototype.getAnnotations = function(_typeQueryEnum = "DATA", _maxLevel = 2) {
     var self = this;
     var typeQueryEnum = _typeQueryEnum;
     var objects = {};
     var maxLevel = _maxLevel;
 
-    var getObjects = function (_self, _keyObjArray, _level = 1, _sufix = "") {
+    var getObjects = function(_self, _keyObjArray, _level = 1, _sufix = "") {
         var self = _self;
         var level = _level;
         var keyObjArray = _keyObjArray || new Array();
@@ -27,7 +27,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
         if (!annotations) {
             return;
         }
-        annotations.forEach(function (value, index) {
+        annotations.forEach(function(value, index) {
             value = value.replace(/],\)/g, "])");
             var keyObj = /this.(.*?)(\=)/.exec(value)[1];
             var valueType = /@type.(.*?)(\})/.exec(value);
@@ -47,7 +47,12 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
             if (valueType === "class" && level < maxLevel) {
                 getObjects(self[keyObj], keyObjArr, level + 1, sufix);
             } else if (valueType !== "class") {
-                var annotationsType = /\(((\S)*?)\]\)/g.exec(value)[1].split("],");
+                try {
+                    var annotationsType = /\(((\S)*?)\]\)/g.exec(value)[1].split("],");
+                } catch (e) {
+                    console.error("Annotation Format Error: \n\tClass: %s\n\tAtribute: %s\n\tAnnotation Body: ", self.constructor.name, keyObj, value);
+                    throw e;
+                }
                 var annotationsParamns = null;
                 var objectGenerate = null;
                 loop1: for (var key in annotationsType) {
@@ -72,10 +77,10 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
         });
     }
 
-    var objectGeneration = function (_annotationsParamns, _sufix) {
+    var objectGeneration = function(_annotationsParamns, _sufix) {
         var object = {};
         var sufix = _sufix;
-        var annotationsParamns = _annotationsParamns.map(function (item, index) {
+        var annotationsParamns = _annotationsParamns.map(function(item, index) {
             return (index % 3 === 0) ? item.toLowerCase() : item
         });
         var keySufix = annotationsParamns.indexOf('sufix=');
@@ -99,9 +104,9 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
         return object;
     }
 
-    var setMethods = function () {
+    var setMethods = function() {
         if (Object.keys(objects).length) {
-            objects.getTypeForEval = function (value, type) {
+            objects.getTypeForEval = function(value, type) {
                 var type = type.toLowerCase();
                 if (value === null || value === undefined) {
                     return null;
@@ -117,7 +122,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                         return value;
                 }
             }
-            objects.getValueTypeForEval = function (value, type) {
+            objects.getValueTypeForEval = function(value, type) {
                 if (value === null || value === undefined) {
                     return null;
                 }
@@ -134,7 +139,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                         return value;
                 }
             }
-            objects.getValueType = function (value, type) {
+            objects.getValueType = function(value, type) {
                 if (value === null || value === undefined) {
                     return null;
                 }
@@ -149,7 +154,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                         return value.toString();
                 }
             }
-            objects.getValueTypeForSQL = function (value, type) {
+            objects.getValueTypeForSQL = function(value, type) {
                 if (value === null || value === undefined) {
                     return null;
                 }
@@ -167,7 +172,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
         }
     }
 
-    var init = function () {
+    var init = function() {
         getObjects(self);
         setMethods();
         return objects;
