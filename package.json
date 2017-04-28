@@ -1,24 +1,24 @@
 {
-  "name": "annotation-js",
-  "version": "1.2.2",
-  "description": "Annotation for Javascript language with navigation in subclasses",
-  "main": "annotation.js",
-  "scripts": {
-    "test": "echo \"No test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/joaojuniormail/annotation-js.git"
-  },
-  "keywords": [
-    "annotation",
-    "annotations",
-    "parser"
-  ],
-  "author": "João Júnior <joaojunior.mail@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/joaojuniormail/annotation-js/issues"
-  },
-  "homepage": "https://github.com/joaojuniormail/annotation-js#readme"
+    "name": "annotation-js",
+    "version": "1.2.3",
+    "description": "Annotation for Javascript language with navigation in subclasses",
+    "main": "annotation.js",
+    "scripts": {
+        "test": "echo \"No test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/joaojuniormail/annotation-js.git"
+    },
+    "keywords": [
+        "annotation",
+        "annotations",
+        "parser"
+    ],
+    "author": "João Júnior <joaojunior.mail@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/joaojuniormail/annotation-js/issues"
+    },
+    "homepage": "https://github.com/joaojuniormail/annotation-js#readme"
 }
