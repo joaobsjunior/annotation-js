@@ -50,7 +50,7 @@ class OutherData {
     constructor(id = null, description = null) {
         /*
         @Annotation(
-            ANNOTATION_NAME_1[informationName="param_id",dir:"BIND_INOUT"],
+            ANNOTATION_NAME_1[informationName="param_id",dir="BIND_INOUT"],
             ANNOTATION_NAME_2[informationName="param_id_2"],
         )
         @type{number}
@@ -66,7 +66,7 @@ class OutherData {
         this.description = description;
          /*
         @Annotation(
-            ANNOTATION_NAME_1[informationName="param_cpf",dir:"BIND_INOUT"],
+            ANNOTATION_NAME_1[informationName="param_cpf",dir="BIND_INOUT"],
             ANNOTATION_NAME_2[informationName="param_cpf_2"],
         )
         @type{integer}
