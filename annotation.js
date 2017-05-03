@@ -178,7 +178,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                         return (parseFloat(value)) ? parseFloat(value) : value;
                     case "date":
                         if (value instanceof Date) {
-                            return "TO_DATE('" + value.toISOString() + "', 'YYYY-MM-DDTHH:mm:ss.sssZ')";
+                            return "TO_DATE('" + value.toISOString().split('T').join(' ').split('.')[0] + "', 'YYYY-MM-DD HH24:MI:SS')";
                         } else {
                             return "TO_DATE('" + value.toString() + "', 'YYYY-MM-DD')";
                         }
