@@ -313,17 +313,18 @@ global.generateSQL = (_variable, _typeSQL = '', _tableName = '', _where = '', _m
     };
 
     var generateUPDATE = () => {
-        sql += "UPDATE " + _tableName + " SET ";
+        sql += "UPDATE " + _tableName + " SET  ";
         for (var key in object) {
             if (object.hasOwnProperty(key) && typeof object[key] !== "function") {
                 if (object[key][nameAnnotation]) {
                     var value = eval("_variable." + key);
                     if (value || value === 0) {
-                        sql += object[key][nameAnnotation] + '=' + object.getValueTypeForSQL(value, object[key].type);
+                        sql += ' '+object[key][nameAnnotation] + ' = ' + object.getValueTypeForSQL(value, object[key].type)+',';
                     }
                 }
             }
         }
+        sql = sql.slice(0,-1);
         sql += ' WHERE ' + _where;
         return sql;
     };
