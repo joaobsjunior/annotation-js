@@ -1,7 +1,6 @@
 # annotation-js
 
-Data de criação: 22 de fevereiro de 2017
-
+``` Data de criação: 22 de fevereiro de 2017 ```
 
 Módulo para anotação em Javascript.
 
