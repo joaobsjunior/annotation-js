@@ -1,5 +1,8 @@
 # annotation-js
 
+Dados de criação: 22 de fevereiro de 2017
+
+
 Módulo para anotação em Javascript.
 
 Modelo da anotação:
