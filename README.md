@@ -1,6 +1,7 @@
 # annotation-js
 
-``` Date Created: February 22, 2017 ```
+``` Creation date: February 22, 2017 ```
+``` Update date: March 7, 2017 ```
 
 Module for annotation in Javascript.
 
