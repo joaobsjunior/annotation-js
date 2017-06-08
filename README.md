@@ -1,10 +1,10 @@
 # annotation-js
 
-``` Data de criação: 22 de fevereiro de 2017 ```
+``` Date Created: February 22, 2017 ```
 
-Módulo para anotação em Javascript.
+Module for annotation in Javascript.
 
-Modelo da anotação:
+Annotation template:
 ```javascript
 /*
 @Annotation(
@@ -15,9 +15,9 @@ DATA[query=""<required>,column=""<opcional>,type=""<opcional>,sufix=""<string fo
 */
 ```
 
-Exemplo de uso:
+Example usage:
 
- - Adicionar as notações nas classes:
+ - Add the notations in the classes:
  
 ```javascript
 class Contact {
@@ -122,16 +122,16 @@ class User {
     }
 }
 ```
- - Método para leitura de notação (genérico):
+ - Method for reading notation (generic):
 
 ```javascript
 User.getAnnotations(<name_annotation{string}>,<max_level{integer}>);
 ```
-Exemplo:
+Example:
 ```javascript
 var annotation = User.getAnnotations('ANNOTATION_NAME_1',2);
 ```
- - Método para leitura de notação (popular dados em objeto através de um array):
+ - Method for reading notation (popular data in object through an array):
 ```javascript
 global.populateToService(<variable{any}>, <json{object}>, <type_array{string(query,body)}>,<name_annotation{string}>, <information_name{string}>,<max_level{integer}>);
 ```
@@ -140,11 +140,11 @@ Exemplo:
 var user = new User();
 global.populateToService(user, {param_date_created:new Date(),param_name:'John'}, "query", "ANNOTATION_NAME_1", "informationName", 2);
 ```
- - Método para leitura de notação para bindVars do módulo ```npm oracledb```:
+ - Method for reading notation for bindVars of the module ```npm oracledb```:
 ```javascript
 global.populateToPersistence(<variable{any}>, <name_annotation{string}>, <variable_name{string}>,<information_name{string}>,<max_level{integer}>);
 ```
-Exemplo:
+Example:
 ```javascript
 var bindVars = null;
 var stringToEval = global.populateToPersistence(user, "ANNOTATION_NAME_1", "user", "informationName", 3);
@@ -153,11 +153,11 @@ bindVars = Object.assign({}, bindVars, {
       cursor: {dir: oracledb.BIND_OUT, type: oracledb.CURSOR, maxSize: 2}
     });
 ```
- - Método geração de SQL genérico (INSERT,UPDATE):
+ - Generic SQL Generation Method (INSERT, UPDATE):
 ```javascript
 global.generateSQL(<variable{any}>, <typeSQL{string(INSERT,UPDATE)}>, <table_name{string}>, <where{string}>,<name_annotation{string}>, <information_name{string}>,<max_level{integer}>);
 ```
-Exemplo:
+Example:
 ```javascript
 var sql = global.generateSQL(user, "UPDATE", "TB_CLIENT", "id = 1", "ANNOTATION_NAME_1", "informationName", 3);
 console.log(sql);
