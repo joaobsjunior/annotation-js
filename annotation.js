@@ -19,6 +19,9 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
     var maxLevel = _maxLevel;
 
     var getObjects = function (_self, _keyObjArray, _level = 1, _sufix = "") {
+        if(!_self){
+            return;
+        }
         var self = _self;
         var level = _level;
         var keyObjArray = _keyObjArray || new Array();
