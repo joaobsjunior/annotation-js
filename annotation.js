@@ -118,7 +118,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                     case "date":
                         return "new Date(" + value.getTime() + ")";
                     case "string":
-                        return '"' + value + '"';
+                        return '"' + value.replace(/(\n)/g, '\\n') + '"';
                     case "boolean":
                         return (value == 'true' || value == '1') ? true : false;
                     default:
@@ -133,7 +133,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                     case "date":
                         return "new Date('" + value + "')";
                     case "string":
-                        return '"' + value + '"';
+                        return '"' + value.replace(/(\n)/g, '\\n') + '"';
                     case "boolean":
                         return (value == 'true' || value == '1') ? true : false;
                     case "number":
