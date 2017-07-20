@@ -2,8 +2,6 @@
 
 ``` Publication date: February 22, 2017 ```
 
-``` Update date: June 26, 2017 ```
-
 Module for annotation in Javascript.
 
 Annotation template:
