@@ -19,7 +19,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
     var maxLevel = _maxLevel;
 
     var getObjects = function (_self, _keyObjArray, _level = 1, _sufix = "") {
-        if(!_self){
+        if (!_self) {
             return;
         }
         var self = _self;
@@ -95,7 +95,14 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
             var keyObj = null;
             if (annotationsParamns.hasOwnProperty(key) && key % 3 === 0) {
                 keyObj = annotationsParamns[key].replace("=", "").toLowerCase();
-                object[keyObj] = annotationsParamns[key + 1].replace(/\"/g, "") + sufix;
+                try {
+                    object[keyObj] = annotationsParamns[key + 1].replace(/\"/g, "") + sufix;
+                } catch (e) {
+                    console.error("Annotation Format Error: \nClass: %s\nText: %s",
+                        self.constructor.name,
+                        annotationsParamns.join(''));
+                    throw e;
+                }
                 if (keyObj === "type") {
                     object[keyObj] = object[keyObj].toLowerCase();
                 }
@@ -322,12 +329,12 @@ global.generateSQL = (_variable, _typeSQL = '', _tableName = '', _where = '', _m
                 if (object[key][nameAnnotation]) {
                     var value = eval("_variable." + key);
                     if (value || value === 0) {
-                        sql += ' '+object[key][nameAnnotation] + ' = ' + object.getValueTypeForSQL(value, object[key].type)+',';
+                        sql += ' ' + object[key][nameAnnotation] + ' = ' + object.getValueTypeForSQL(value, object[key].type) + ',';
                     }
                 }
             }
         }
-        sql = sql.slice(0,-1);
+        sql = sql.slice(0, -1);
         sql += ' WHERE ' + _where;
         return sql;
     };
