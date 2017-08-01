@@ -144,10 +144,12 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                     case "boolean":
                         return (value == 'true' || value == '1') ? true : false;
                     case "number":
+                        value = value ? value : 0;
                         return (parseFloat(value)) ? parseFloat(value) : value;
                     case "integer":
                         if (typeof value == 'string') {
                             value = value.replace(/\D/g, '');
+                            value = value ? value : 0;
                         }
                         return (parseFloat(value)) ? parseFloat(value) : value;
                     default:
@@ -160,10 +162,12 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                 }
                 switch (type) {
                     case "number":
+                        value = value ? value : 0;
                         return parseFloat(value);
                     case "integer":
                         if (typeof value == 'string') {
                             value = value.replace(/\D/g, '');
+                            value = value ? value : 0;
                         }
                         return (parseFloat(value)) ? parseFloat(value) : value;
                     case "date":
@@ -180,10 +184,12 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                 }
                 switch (type) {
                     case "number":
+                        value = value ? value : 0;
                         return parseFloat(value);
                     case "integer":
                         if (typeof value == 'string') {
                             value = value.replace(/\D/g, '');
+                            value = value ? value : 0;
                         }
                         return (parseFloat(value)) ? parseFloat(value) : value;
                     case "date":
