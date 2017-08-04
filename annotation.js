@@ -11,7 +11,8 @@ JSON.clone = function (value) {
 }
 
 /* -------------------------------- GET ANNOTATIONS --------------------------------  */
-
+global = global || {};
+global.annotationsDebug = true;
 Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel = 2) {
     var self = this;
     var typeQueryEnum = _typeQueryEnum;
@@ -53,7 +54,9 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                 try {
                     var annotationsType = /\(((\S)*?)\]\)/g.exec(value)[1].split("],");
                 } catch (e) {
-                    console.error("Annotation Format Error: \n\tClass: %s\n\tAtribute: %s\n\tAnnotation Body: ", self.constructor.name, keyObj, value);
+                    if (global.annotationsDebug) {
+                        console.error("Annotation Format Error: \n\tClass: %s\n\tAtribute: %s\n\tAnnotation Body: ", self.constructor.name, keyObj, value);
+                    }
                     throw e;
                 }
                 var annotationsParamns = null;
@@ -98,9 +101,11 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                 try {
                     object[keyObj] = annotationsParamns[key + 1].replace(/\"/g, "") + sufix;
                 } catch (e) {
-                    console.error("Annotation Format Error: \nClass: %s\nText: %s",
-                        self.constructor.name,
-                        annotationsParamns.join(''));
+                    if (global.annotationsDebug) {
+                        console.error("Annotation Format Error: \nClass: %s\nText: %s",
+                            self.constructor.name,
+                            annotationsParamns.join(''));
+                    }
                     throw e;
                 }
                 if (keyObj === "type") {
@@ -236,7 +241,9 @@ global.populateToService = (_variable, _req, _reqType, _mainAnnotation, _annotat
                     var value = object.getValueTypeForEval(eval("req." + key), object[key].type);
                     eval("_variable." + key + "= " + value);
                 } catch (err) {
-                    console.error("----\n", err.message, "\n object key: " + key + "\n----\n");
+                    if (global.annotationsDebug) {
+                        console.error("----\n", err.message, "\n object key: " + key + "\n----\n");
+                    }
                 }
             } else {
                 if (keyArr.indexOf(object[key][nameAnnotation]) !== 1) {

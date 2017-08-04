@@ -162,3 +162,7 @@ Example:
 var sql = global.generateSQL(user, "UPDATE", "TB_CLIENT", "id = 1", "ANNOTATION_NAME_1", "informationName", 3);
 console.log(sql);
 ```
+ - Debug Mode:
+```javascript
+global.annotationsDebug = true; //Default: true
+```
