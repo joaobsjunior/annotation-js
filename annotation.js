@@ -138,7 +138,7 @@ Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel =
                 }
             }
             objects.getValueTypeForEval = function (value, type) {
-                if (value === null || value === undefined) {
+                if (value === null || value === undefined || value === '') {
                     return null;
                 }
                 switch (type) {
