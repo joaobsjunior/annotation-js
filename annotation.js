@@ -13,7 +13,13 @@ JSON.clone = function (value) {
 /* -------------------------------- GET ANNOTATIONS --------------------------------  */
 global = global || {};
 global.annotationsDebug = true;
-Object.prototype.getAnnotations = function (_typeQueryEnum = "DATA", _maxLevel = 2) {
+
+Object.defineProperty(Object.prototype, "getAnnotations", {
+    enumerable: false,
+    value: getAnnotations
+});
+
+function getAnnotations(_typeQueryEnum = "DATA", _maxLevel = 2) {
     var self = this;
     var typeQueryEnum = _typeQueryEnum;
     var objects = {};
