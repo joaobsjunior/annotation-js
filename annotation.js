@@ -136,7 +136,7 @@ function getAnnotations(_typeQueryEnum = "DATA", _maxLevel = 2) {
                     case "date":
                         return "new Date(" + value.getTime() + ")";
                     case "string":
-                        return '"' + value.replace(/(\n)/g, '\\n') + '"';
+                        return '"' + value.toString().replace(/(\n)/g, '\\n').replace(/\"/g, "'") + '"';
                     case "boolean":
                         return (value == 'true' || value == '1') ? true : false;
                     default:
@@ -151,7 +151,7 @@ function getAnnotations(_typeQueryEnum = "DATA", _maxLevel = 2) {
                     case "date":
                         return "new Date('" + value + "')";
                     case "string":
-                        return '"' + value.replace(/(\n)/g, '\\n') + '"';
+                        return '"' + value.toString().replace(/(\n)/g, '\\n').replace(/\"/g, "'") + '"';
                     case "boolean":
                         return (value == 'true' || value == '1') ? true : false;
                     case "number":
@@ -318,7 +318,7 @@ global.generateSQL = (_variable, _typeSQL = '', _tableName = '', _where = '', _m
             if (object.hasOwnProperty(key) && typeof object[key] !== "function") {
                 if (object[key][nameAnnotation]) {
                     var value = eval("_variable." + key);
-                    if (value || value === 0) {
+                    if (value != null && value != undefined) {
                         sql += object[key][nameAnnotation] + ',';
                     }
                 }
@@ -330,7 +330,7 @@ global.generateSQL = (_variable, _typeSQL = '', _tableName = '', _where = '', _m
             if (object.hasOwnProperty(key) && typeof object[key] !== "function") {
                 if (object[key][nameAnnotation]) {
                     var value = eval("_variable." + key);
-                    if (value || value === 0) {
+                    if (value != null && value != undefined) {
                         sql += object.getValueTypeForSQL(value, object[key].type) + ',';
                     }
                 }
@@ -347,7 +347,7 @@ global.generateSQL = (_variable, _typeSQL = '', _tableName = '', _where = '', _m
             if (object.hasOwnProperty(key) && typeof object[key] !== "function") {
                 if (object[key][nameAnnotation]) {
                     var value = eval("_variable." + key);
-                    if (value || value === 0) {
+                    if (value != null && value != undefined) {
                         sql += ' ' + object[key][nameAnnotation] + ' = ' + object.getValueTypeForSQL(value, object[key].type) + ',';
                     }
                 }
